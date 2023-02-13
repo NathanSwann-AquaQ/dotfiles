@@ -1,14 +1,6 @@
 set nocompatible
 filetype on
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-
 let mapleader = "\<space>"
 
 inoremap jk <Esc>
@@ -16,7 +8,8 @@ set number
 set relativenumber
 set lazyredraw
 
-set cc=50,100
+set tabstop=4
+set autoindent
 
 map <leader>rn :set relativenumber!<CR>
 map <leader>e :Explore!<CR>
@@ -26,6 +19,8 @@ map <leader>rr :!%:p
 map <leader>rx :!chmod u+x %:p
 map <leader>rc :!clear;%:p
 map <leader>cd :cd %:p:h<CR>
+map <leader>vv :vsplit
+map <leader>cc :call Alternate_cc()<CR>
 
 nnoremap <c-j> <c-w>j
 nnoremap <c-k> <c-w>k
@@ -38,3 +33,11 @@ vnoremap <c-n><c-n> :norm i
 nnoremap <c-n><c-m> :norm ^x
 vnoremap <c-n><c-m> :norm ^x
 
+let g:cc_state=0
+let g:cc_options=["80,120",100,"50,100"]
+let &cc=get(g:cc_options,0)
+function Alternate_cc ()
+        let g:cc_state+=1
+        let g:cc_state= g:cc_state % len(g:cc_options)
+        let &cc= get(g:cc_options,g:cc_state)
+endfunction
